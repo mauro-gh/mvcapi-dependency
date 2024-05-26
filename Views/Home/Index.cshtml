@@ -1,0 +1,78 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <h2><span>Dependency Injection</span></h2>
+    <p>Vedere sito <a href="https://www.c-sharpcorner.com/article/understanding-addtransient-vs-addscoped-vs-addsingleton-in-asp-net-core/">understanding-addtransient-vs-addscoped-vs-addsingleton</a>.</p>
+</div>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <td>Tipo di servizio</td>
+            <td>Prima istanza</td>
+            <td>Seconda istanza</td>
+            <td>Terza istanza</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td style="background-color: darksalmon">Transient</td>
+            <td style="background-color: darksalmon">@ViewBag.transientRandom1</td>
+            <td style="background-color: darksalmon">@ViewBag.transientRandom2</td>
+            <td style="background-color: darksalmon">@ViewBag.transientRandom3</td>
+        </tr>
+        <tr>
+            <td style="background-color: lightgray">Scoped</td>
+            <td style="background-color: lightgray">@ViewBag.scopedRandom1</td>
+            <td style="background-color: lightgray">@ViewBag.scopedRandom2</td>
+            <td style="background-color: lightgray">@ViewBag.scopedRandom3</td>
+        </tr>
+        <tr>
+            <td style="background-color: aquamarine">Singleton</td>
+            <td style="background-color: aquamarine">@ViewBag.singletonRandom1</td>
+            <td style="background-color: aquamarine">@ViewBag.singletonRandom2</td>
+            <td style="background-color: aquamarine">@ViewBag.singletonRandom3</td>
+        </tr>
+        <tr>
+            <td colspan="4" style="background-color: darksalmon">Transient: ritorna sempre una nuova istanza, anche se e' nella stessa http request (stesso controller, es. Index)
+                <p>Crea una nuova istanza del servizio ogni volta che ne ha bisogno,
+                e la distrugge dopo che l'ha usata.
+                Causerà la creazione di una nuova istanza del servizio ogni volta 
+                che un componente della nostra applicazione lo richiede. 
+                Dato che nessuna istanza verrà mai riutilizzata, è un ciclo di vita 
+                indicato per servizi semplici e leggeri e senza stato, di veloce creazione come un client HTTP 
+                usato per inviare richieste ad una API remota.</p></td>
+        </tr>
+        <tr>
+            <td colspan="4" style="background-color: lightgray">Scoped: viene create una singola istanza per http request (controller) e la stessa istanza viene quindi condivisa
+            in tutta la request, ma se viene creata una nuova http request (refresh o altra pagina) viene ricreata una nuova istanza.
+            <p>Crea una nuova istanza e la riutilizza finche' siamo nel contesto
+            della stessa richiesta HTTP, al termine la distrugge
+            Lo usiamo per riutilizzare l'istanza di un servizio nel contesto di una richiesta HTTP. 
+            E' consigliato per oggetti che non sono thread-safe o che mantengono uno stato interno 
+            come il DbContext di Entity Framework. In questo modo, dato che la creazione di un'istanza 
+            del servizio avviene una sola volta per ogni richiesta HTTP, riusciamo a razionalizzare 
+            alcuni "costi prestazionali", come quelli legati all'ottenimento di una connessione al database.
+            Si puo' usare anche per inserire i dati di autenticazione e farli vedere ai vari componenti</p></td>
+        </tr>
+        <tr>
+            <td colspan="4" style="background-color: aquamarine">Singleton: viene creata un'unica istanza e viene condivisa tra tutte le applicazioni 
+            anche craendo una nuova http request l'istanza e' sempre la stessa e rimarra' la stessa per tutta l'applicazione.
+            <p>Crea un'unica istanza e la inietta in tutti i componenti che 
+            ne hanno bisogno, anche in richieste HTTP diverse. Attenzione la classe deve
+            essere THREAD SAFE
+            Ci garantisce che verrà creata e riutilizzata una singola istanza per l'intera applicazione. 
+            E' consigliato per servizi che non mantengono uno stato interno, 
+            come le classi che usiamo per recupare valori di configurazione, 
+            per scrivere delle righe di log o per inviare e-mail. 
+            Potenzialmente, i metodi e le proprietà di un servizio singleton verranno usati 
+            da vari thread contemporaneamente e quindi è essenziale 
+            che la sua implementazione sia thread-safe. 
+            Utile quando vogliamo regolare l'accesso ad una risorsa da parte della nostra applicazione, 
+            come ad esempio limitare il numero di e-mail inviate nell'unità di tempo</p></td>
+        </tr>
+    </tbody>
+</table>
